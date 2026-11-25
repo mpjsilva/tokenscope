@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-24T00:00:00Z",
+  "title": "Design System: TokenScope",
+  "extensions": {
+    "colorMeta": {
+      "midnight-ink": {
+        "role": "neutral",
+        "displayName": "Tinta Meia-Noite",
+        "canonical": "#0b0e17",
+        "tonalRamp": ["#05070c", "#080b12", "#0b0e17", "#111626", "#141a2c", "#1a2138", "#252e47", "#3a466a"]
+      },
+      "surface-card": {
+        "role": "neutral",
+        "displayName": "Superfície de Card",
+        "canonical": "#141a2c",
+        "tonalRamp": ["#080b13", "#0d121f", "#111626", "#141a2c", "#1a2138", "#232c48", "#2e3a5e", "#3f4d79"]
+      },
+      "quiet-text": {
+        "role": "neutral",
+        "displayName": "Texto Quieto",
+        "canonical": "#8d97b5",
+        "tonalRamp": ["#1a2035", "#2b344f", "#414c6b", "#5d6783", "#78829f", "#8d97b5", "#adb5cb", "#d3d8e6"]
+      },
+      "amethyst-viva": {
+        "role": "primary",
+        "displayName": "Ametista Viva",
+        "canonical": "oklch(60% 0.20 295)",
+        "tonalRamp": [
+          "oklch(18% 0.07 295)",
+          "oklch(28% 0.11 295)",
+          "oklch(38% 0.16 295)",
+          "oklch(48% 0.20 295)",
+          "oklch(58% 0.24 295)",
+          "oklch(68% 0.18 295)",
+          "oklch(80% 0.11 295)",
+          "oklch(92% 0.05 295)"
+        ]
+      },
+      "signal-cyan": {
+        "role": "secondary",
+        "displayName": "Ciano de Sinal",
+        "canonical": "oklch(79% 0.13 195)",
+        "tonalRamp": [
+          "oklch(20% 0.04 195)",
+          "oklch(30% 0.07 195)",
+          "oklch(40% 0.10 195)",
+          "oklch(52% 0.13 195)",
+          "oklch(64% 0.15 195)",
+          "oklch(74% 0.14 195)",
+          "oklch(84% 0.10 195)",
+          "oklch(94% 0.04 195)"
+        ]
+      },
+      "signal-ok": {
+        "role": "status",
+        "displayName": "Verde de OK",
+        "canonical": "#34d399",
+        "tonalRamp": ["#0a2c22", "#104336", "#185c49", "#207a61", "#2a9d7c", "#34d399", "#7ee5bd", "#c7f4e2"]
+      },
+      "signal-warn": {
+        "role": "status",
+        "displayName": "Âmbar de Atenção",
+        "canonical": "#fbbf24",
+        "tonalRamp": ["#3a2c05", "#5c450a", "#7d5f10", "#a37d16", "#cb9d1c", "#fbbf24", "#fcd34d", "#fde68a"]
+      },
+      "signal-err": {
+        "role": "status",
+        "displayName": "Rosa de Erro",
+        "canonical": "#fb7185",
+        "tonalRamp": ["#3a1018", "#5c1722", "#7d1f2e", "#a3283a", "#c95060", "#fb7185", "#fda4af", "#fecdd3"]
+      },
+      "day-card": {
+        "role": "neutral",
+        "displayName": "Card Diurno",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#e9edf7", "#f0f3f9", "#f5f7fd", "#fafbfe", "#ffffff", "#ffffff", "#ffffff", "#ffffff"]
+      },
+      "amoled-black": {
+        "role": "neutral",
+        "displayName": "Preto AMOLED",
+        "canonical": "#000000",
+        "tonalRamp": ["#000000", "#050505", "#0a0a0a", "#121212", "#1a1a1a", "#282828", "#4a4a4a", "#7a7a7a"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "O valor total na abertura da visão geral." },
+      "headline": { "displayName": "Headline", "purpose": "Relógio e métricas grandes no modo AMOLED." },
+      "title": { "displayName": "Title", "purpose": "Nome da marca e títulos de sheet." },
+      "body": { "displayName": "Body", "purpose": "Texto corrente e descrições." },
+      "label": { "displayName": "Label", "purpose": "Títulos de seção e campos, em maiúsculas." },
+      "mono": { "displayName": "Mono", "purpose": "Chaves e URLs copiáveis." }
+    },
+    "shadows": [
+      { "name": "card-dark", "value": "0 10px 30px rgba(0,0,0,.28)", "purpose": "Altitude padrão dos cards no tema escuro." },
+      { "name": "card-light", "value": "0 8px 24px rgba(20,26,44,.08)", "purpose": "Versão clara, mais rasa." },
+      { "name": "desktop-halo", "value": "0 0 60px rgba(0,0,0,.25)", "purpose": "Isola a coluna acima de 521px." },
+      { "name": "focus-ring", "value": "0 0 0 3px rgba(139,92,246,.14)", "purpose": "Confirmação de foco em campos." }
+    ],
+    "motion": [
+      { "name": "view-fade", "value": ".22s ease", "purpose": "Entrada das views." },
+      { "name": "sheet-up", "value": ".24s ease", "purpose": "Abertura de sheets a partir da borda inferior." },
+      { "name": "micro", "value": ".15s ease", "purpose": "Hover e pressão de botões." },
+      { "name": "spin", "value": ".7s linear infinite", "purpose": "Indicador de carregamento." },
+      { "name": "amoled-drift", "value": ".9s ease", "purpose": "Deslocamento anti-burn-in da tela sempre ligada." }
+    ],
+    "breakpoints": [
+      { "name": "wide", "value": "521px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação principal; preenchido com o gradiente de assinatura.",
+      "html": "<button class=\"ds-btn-primary\">Salvar serviço</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent,#8b5cf6),#6366f1);border:0;color:#fff;border-radius:11px;padding:10px 14px;font:650 13px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;cursor:pointer;transition:filter .15s,transform .15s}.ds-btn-primary:hover{filter:brightness(1.08)}.ds-btn-primary:focus-visible{outline:2px solid var(--accent-2,#22d3ee);outline-offset:2px}.ds-btn-primary:active{transform:scale(.98)}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ação alternativa sobre superfície elevada.",
+      "html": "<button class=\"ds-btn-secondary\">Testar</button>",
+      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;justify-content:center;background:var(--card-2,#1a2138);border:1px solid var(--line,#252e47);color:var(--text,#eef1fa);border-radius:11px;padding:10px 14px;font:650 13px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;cursor:pointer;transition:border-color .15s}.ds-btn-secondary:hover{border-color:var(--accent,#8b5cf6)}.ds-btn-secondary:focus-visible{outline:2px solid var(--accent-2,#22d3ee);outline-offset:2px}.ds-btn-secondary:active{transform:scale(.98)}"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "icon-button",
+      "description": "Controle compacto da barra superior.",
+      "html": "<button class=\"ds-icon-btn\" aria-label=\"Atualizar uso\"><svg viewBox=\"0 0 24 24\" width=\"17\" height=\"17\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 11a8 8 0 1 0-2 6M20 5v6h-6\"/></svg></button>",
+      "css": ".ds-icon-btn{width:36px;height:36px;display:grid;place-items:center;background:var(--card,#141a2c);border:1px solid var(--line,#252e47);border-radius:11px;color:var(--muted,#8d97b5);cursor:pointer;transition:.15s}.ds-icon-btn:hover{color:var(--text,#eef1fa);border-color:var(--accent,#8b5cf6)}.ds-icon-btn:focus-visible{outline:2px solid var(--accent-2,#22d3ee);outline-offset:2px}.ds-icon-btn:active{transform:scale(.96)}"
+    },
+    {
+      "name": "Metric Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Contêiner de dados; a unidade tonal básica do painel.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-label\">Tokens hoje</div><div class=\"ds-card-value\">128.4k</div></div>",
+      "css": ".ds-card{background:var(--card,#141a2c);border:1px solid var(--line,#252e47);border-radius:18px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.28);color:var(--text,#eef1fa);font:400 15px/1.45 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}.ds-card-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted,#8d97b5)}.ds-card-value{font-size:32px;font-weight:800;letter-spacing:-1.2px;margin-top:3px;font-variant-numeric:tabular-nums}"
+    },
+    {
+      "name": "Status Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Pill de estado; o ponto é o único indicador.",
+      "html": "<span class=\"ds-chip ds-chip-ok\"><i></i>Operacional</span>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line,#252e47);background:var(--card-2,#1a2138);border-radius:999px;padding:5px 10px;font:600 11px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--muted,#8d97b5);white-space:nowrap}.ds-chip i{width:6px;height:6px;border-radius:50%;background:var(--muted,#8d97b5)}.ds-chip-ok i{background:#34d399}.ds-chip-warn i{background:#fbbf24}.ds-chip-err i{background:#fb7185}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "text-field",
+      "description": "Campo de configuração com foco violeta.",
+      "html": "<label class=\"ds-field\"><span>Base URL</span><input type=\"url\" placeholder=\"https://api.exemplo.com\"><small>Opcional para modo proxy</small></label>",
+      "css": ".ds-field{display:block;font:700 12px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--muted,#8d97b5)}.ds-field span{display:block;margin-bottom:6px}.ds-field input{width:100%;background:var(--card,#141a2c);border:1px solid var(--line,#252e47);color:var(--text,#eef1fa);border-radius:11px;padding:11px 12px;font:400 14px/1.4 inherit;outline:none}.ds-field input:focus{border-color:var(--accent,#8b5cf6);box-shadow:0 0 0 3px rgba(139,92,246,.14)}.ds-field small{display:block;margin-top:5px;font-size:11px;color:var(--muted,#8d97b5)}"
+    },
+    {
+      "name": "Bottom Navigation",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Cinco destinos fixos, com ativo em ciano.",
+      "html": "<nav class=\"ds-nav\"><button class=\"ds-nav-item ds-nav-active\">Visão geral</button><button class=\"ds-nav-item\">Serviços</button><button class=\"ds-nav-item\">AMOLED</button><button class=\"ds-nav-item\">Proxy</button><button class=\"ds-nav-item\">Ajustes</button></nav>",
+      "css": ".ds-nav{display:grid;grid-template-columns:repeat(5,1fr);max-width:520px;margin:0 auto;background:rgba(17,22,38,.92);backdrop-filter:blur(18px);border-top:1px solid var(--line,#252e47);padding:7px 8px}.ds-nav-item{background:none;border:0;color:var(--muted-2,#8490ad);font:600 11px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:5px 0;cursor:pointer}.ds-nav-item:hover{color:var(--text,#eef1fa)}.ds-nav-item.ds-nav-active{color:var(--accent-2,#22d3ee)}.ds-nav-item:focus-visible{outline:2px solid var(--accent-2,#22d3ee);outline-offset:2px}"
+    },
+    {
+      "name": "AMOLED Screen",
+      "kind": "custom",
+      "description": "Assinatura do produto: tela preta pura e sempre ligada.",
+      "html": "<div class=\"ds-amoled\"><div class=\"ds-am-clock\">03:41</div><div class=\"ds-am-section\">Tokens hoje</div><div class=\"ds-am-value\">128.4k</div><div class=\"ds-am-bar\"><i style=\"width:64%\"></i></div></div>",
+      "css": ".ds-amoled{min-height:100vh;background:#000;color:#f2f2f2;padding:24px 22px;display:flex;flex-direction:column;gap:13px;font:400 12px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}.ds-am-clock{font-size:52px;font-weight:200;letter-spacing:-3px;line-height:1;font-variant-numeric:tabular-nums}.ds-am-section{font-size:11px;letter-spacing:.16em;color:#8a8a8a;text-transform:uppercase;margin-top:2px}.ds-am-value{font-size:25px;font-weight:500;font-variant-numeric:tabular-nums;margin-top:3px}.ds-am-bar{height:2px;background:#1d1d1d;border-radius:2px;overflow:hidden}.ds-am-bar i{display:block;height:100%;background:#f2f2f2;transition:width .5s ease}"
+    }
+  ],
+  "narrative": {
+    "northStar": "O Painel de Instrumentos",
+    "overview": "Esta é uma interface de medição, não de apresentação. O fundo é um navy profundo que funciona como vidro escuro de instrumento: ele não compete com os números, ele os sustenta. A hierarquia é construída por peso e tamanho — o valor de consumo aparece grande, tabular e com leitura imediata; rótulos são pequenos, maiúsculos e espaçados, como inscrições em um equipamento. Violeta e ciano não são decoração: são sinal de navegação ativa, de progresso e de estado.\n\nO sistema tem três esquemas distintos, não um tema único. O escuro padrão é o painel de trabalho. O claro é uma variante real com superfícies claras e tinta escura — não um invert. O modo AMOLED é uma superfície autônoma de preto puro, sem gradiente, sem navegação e sem sombra, feita para ficar ligada: os números são mais finos, o deslocamento é lento e o brilho é controlado pelo plugin nativo. Essa terceira superfície é a assinatura mais reconhecível do produto e deve sobreviver a qualquer refatoração.",
+    "keyCharacteristics": [
+      "Painel escuro por camadas tonais, com numeradores tabulares em destaque.",
+      "Dois acentos de sinal (violeta e ciano) usados com parcimônia.",
+      "Três esquemas: escuro, claro e AMOLED de preto puro.",
+      "Contêiner de 520px no celular, com navegação inferior fixa e insets de sistema respeitados.",
+      "Componentes de ferramenta: pills, sheets, switches e barras de progresso — não uma vitrine de marketing."
+    ],
+    "rules": [
+      { "name": "The Signal-Only Accent Rule", "body": "Violeta e ciano aparecem em estado, navegação ativa e progresso — nunca como fundo de texto corrido. Se um elemento não está comunicando algo, ele é neutro.", "section": "colors" },
+      { "name": "The Three-Scheme Rule", "body": "Escuro, claro e AMOLED são três esquemas com intenções diferentes. O modo AMOLED nunca herda gradiente, sombra ou bordas do painel normal.", "section": "colors" },
+      { "name": "The Tabular Number Rule", "body": "Todo número que muda em tempo real usa font-variant-numeric: tabular-nums. Sem isso, os valores vibram lateralmente a cada atualização e a leitura de relance se perde.", "section": "typography" },
+      { "name": "The Tonal-First Rule", "body": "Se uma superfície precisa parecer mais alta, mude o nível tonal antes de aumentar a sombra. No modo AMOLED não há sombra alguma — apenas divisórias de 1px.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do preservar viewport-fit=cover e todos os env(safe-area-inset-*); o app roda dentro de um WebView Android com recorte e barra de navegação do sistema.",
+      "Do manter tabular-nums em relógio, totais e percentuais.",
+      "Do manter os três esquemas — escuro, claro e AMOLED — como implementações independentes.",
+      "Do usar os logos oficiais em src/icons/ e o ícone de marca gerado a partir de novo-icone.jpeg.",
+      "Do limitar a coluna a 520px e a navegação a cinco destinos."
+    ],
+    "donts": [
+      "Don't usar preto puro fora do modo AMOLED; o painel padrão é #0b0e17.",
+      "Don't colocar violeta ou ciano como fundo de parágrafo — acento é sinal, não papel de parede.",
+      "Don't portar controles iOS (bottom-only navigation copiada do iPhone, switches de Cupertino, diálogos de iOS) para este app Android; a barra inferior aqui é a convenção Material para 5 destinos, mas o gerenciamento de Back do sistema é obrigatório.",
+      "Don't remover o deslocamento anti-burn-in do modo AMOLED nem introduzir sombras nele.",
+      "Don't substituir os logos dos provedores por marcações genéricas ou inventar valores de custo que a API não fornece."
+    ]
+  }
+}

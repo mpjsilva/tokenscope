@@ -1,0 +1,15 @@
+{
+  "appId": "com.tokenscope.app",
+  "appName": "TokenScope",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "http"
+  },
+  "android": {
+    "allowMixedContent": true,
+    "captureConsole": false
+  },
+  "plugins": {
+    "TokenBridge": {}
+  }
+}

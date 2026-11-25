@@ -1,0 +1,16 @@
+{
+  "name": "tokenscope",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monitor de uso de tokens e custos de serviços de IA (Android via Capacitor)",
+  "scripts": {
+    "serve": "python3 -m http.server 8080 --directory dist"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.0.0"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/core": "^8.0.0"
+  }
+}

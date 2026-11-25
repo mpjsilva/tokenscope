@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <meta name="theme-color" content="#0b0e17">
+  <meta name="description" content="Monitore o uso de tokens e custos dos seus provedores de IA em um só lugar.">
+  <title>TokenScope — Uso de IA sob controle</title>
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <img src="src/icons/tokenscope-mark.png" alt="">
+        </div>
+        <div>
+          <div class="brand-name">TokenScope</div>
+          <div class="brand-sub" id="brandSub">Use seus provedores sob controle</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="btnTheme" title="Tema" aria-label="Alternar tema"></button>
+        <button class="icon-btn" id="btnRefresh" title="Atualizar" aria-label="Atualizar uso"></button>
+      </div>
+    </header>
+
+    <main id="view" class="view" role="main"></main>
+
+    <nav class="bottom-nav" aria-label="Navegação principal">
+      <button class="nav-item active" data-tab="dashboard"><span class="nav-ico" data-icon="home"></span><span>Visão geral</span></button>
+      <button class="nav-item" data-tab="services"><span class="nav-ico" data-icon="layers"></span><span>Provedores</span></button>
+      <button class="nav-item" data-tab="amoled"><span class="nav-ico" data-icon="amoled"></span><span>AMOLED</span></button>
+      <button class="nav-item" data-tab="proxy"><span class="nav-ico" data-icon="network"></span><span>Proxy</span></button>
+      <button class="nav-item" data-tab="settings"><span class="nav-ico" data-icon="settings"></span><span>Ajustes</span></button>
+    </nav>
+  </div>
+
+  <div id="sheet" class="sheet-backdrop hidden" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+      <div class="sheet-grip"></div>
+      <div class="sheet-head">
+        <h2 id="sheetTitle">Novo provedor</h2>
+        <button class="icon-btn" id="sheetClose" aria-label="Fechar"></button>
+      </div>
+      <div id="sheetBody" class="sheet-body"></div>
+    </div>
+  </div>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
