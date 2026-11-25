@@ -6,7 +6,8 @@ App Android (Capacitor) para monitorar **uso de tokens, limites e custo estimado
 - Código-fonte web: `index.html`, `src/`.
 - Plugin Android nativo: `native/TokenBridgePlugin.java` (HTTP sem CORS + proxy local + keep-awake/brilho do modo AMOLED).
 - Logos oficiais dos provedores em `src/icons/` (favicons 128×128 salvos localmente).
-- v1.8 / versionCode 9: mesmo pacote (`com.tokenscope.app`) e mesma chave debug — instalar por cima **preserva chaves, histórico e ajustes**.
+- v1.9 / versionCode 10: mesmo pacote (`com.tokenscope.app`) e mesma chave debug — instalar por cima **preserva chaves, histórico e ajustes**.
+- Modelos gratuitos ganham a tag **Grátis** na lista e o campo "Gratuito" na ficha do modelo (critério: preço de entrada e saída zero na API, ou "free" no id/nome).
 - Atualização automática: o app consulta a API de releases do GitHub (`mpjsilva/tokenscope`), mostra um aviso quando há versão nova e baixa/instala o APK da release pelo botão **Baixar e instalar** (plugin nativo + FileProvider). `RELEASE_URL` é a página da última release.
 - Dashboard focado em limites e custo: sem contador de tokens e sem gráfico de barras verticais.
 - Terminologia: "provedor" no lugar de "serviço" na interface; botão dos cards agora é **Atualizar**.

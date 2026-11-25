@@ -198,6 +198,7 @@ body.amoled .view{padding:0;animation:none}
 .model-row{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px 12px;color:var(--text);cursor:pointer}
 .model-row:hover{border-color:var(--accent)}
 .model-row > svg{width:14px;height:14px;color:var(--muted-2);flex:none}
+.model-free{font-size:11px;flex:none;color:var(--ok);border:1px solid rgba(52,211,153,.45);background:rgba(52,211,153,.10);border-radius:6px;padding:2px 7px;font-weight:700}
 .model-info-head{display:flex;align-items:center;gap:12px;padding:4px 0 16px;border-bottom:1px solid var(--line)}
 .model-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;margin-top:16px}
 .model-info-grid > div{display:flex;flex-direction:column;gap:4px;min-width:0}

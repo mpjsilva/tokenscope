@@ -3,7 +3,7 @@ import { collectUsage, fmtK } from './usage.js';
 import { requestJSON, requestRaw, nativeCall, hasNativeBridge, isNative } from './net.js';
 import { load, save, uid, recordHistory } from './store.js';
 
-const APP_VERSION = '1.8';
+const APP_VERSION = '1.9';
 const UPDATE_REPO = 'mpjsilva/tokenscope';
 const RELEASE_URL = `https://github.com/${UPDATE_REPO}/releases/latest`;
 const state = load();
@@ -161,6 +161,16 @@ async function downloadUpdate() {
 }
 
 /* ------------------------------- modelos --------------------------------- */
+function modelFree(obj) {
+  if (obj?.free === true) return true;
+  const cost = obj?.cost || obj?.pricing || {};
+  const text = cost.text || cost;
+  const input = text.input?.price ?? cost.input ?? cost.prompt;
+  const output = text.output?.price ?? cost.output ?? cost.completion;
+  if (input != null && output != null && Number(input) === 0 && Number(output) === 0) return true;
+  return /free/i.test(String(obj?.id || '')) || /free/i.test(String(obj?.name || ''));
+}
+
 function normalizeModels(j) {
   if (!j || typeof j !== 'object') return null;
   const out = [];
@@ -173,6 +183,7 @@ function normalizeModels(j) {
       name: String(obj.name || obj.id || key),
       provider: String(obj.owned_by || obj.provider || (obj.canonical_id || '').split('/')[0] || ''),
       openSource: obj.open_weights === true || obj.openSource === true,
+      free: modelFree(obj),
       cost: obj.cost || obj.pricing || null,
       description: String(obj.description || ''),
       family: String(obj.family || ''),
@@ -218,6 +229,7 @@ async function fetchOpenCodeModels(service) {
         name: String(m?.name || id),
         provider: String(m?.owned_by || (m?.canonical_id || '').split('/')[0] || ''),
         openSource: m?.open_weights === true,
+        free: modelFree(m),
         cost: m?.cost || null,
         description: String(m?.description || ''),
         family: String(m?.family || ''),
@@ -333,6 +345,7 @@ function renderModelList() {
       return `<button class="model-row" data-act="model-info" data-id="${s.id}" data-model="${esc(m.id)}" title="${esc(title)}">
         <span class="model-dot ${dot}"></span>
         <span class="model-row-main"><b>${esc(m.name)}</b><small class="mono">${esc(m.id)}</small></span>
+        ${m.free ? '<span class="model-free">Grátis</span>' : ''}
         ${icon('chevron')}
       </button>`;
     }).join('') || '<div class="empty" style="padding:20px">Nenhum modelo encontrado.</div>';
@@ -827,6 +840,7 @@ function renderSheet() {
         <div><span class="mini-label">Status</span><b>${esc(status)}</b></div>
         <div><span class="mini-label">Fornecedor</span><b>${esc(m.provider || '—')}</b></div>
         <div><span class="mini-label">Open source</span><b style="color:${m.openSource ? 'var(--ok)' : 'var(--muted)'}">${m.openSource ? 'Sim' : 'Não'}</b></div>
+        <div><span class="mini-label">Gratuito</span><b style="color:${m.free ? 'var(--ok)' : 'var(--muted)'}">${m.free ? 'Sim' : 'Não'}</b></div>
         <div><span class="mini-label">Família</span><b>${esc(m.family || '—')}</b></div>
         <div><span class="mini-label">Entrada / 1M</span><b>${esc(fmtRate(priceIn))}</b></div>
         <div><span class="mini-label">Saída / 1M</span><b>${esc(fmtRate(priceOut))}</b></div>

@@ -30,8 +30,8 @@ npm install --no-audit --no-fund > /dev/null
 npx cap sync android > /dev/null
 # Mesmo applicationId e mesma chave debug => atualizar por cima preserva dados.
 # versionCode maior identifica a instalacao como atualizacao.
-sed -i 's/versionCode [0-9]*/versionCode 9/' android/app/build.gradle
-sed -i 's/versionName "[^"]*"/versionName "1.8"/' android/app/build.gradle
+sed -i 's/versionCode [0-9]*/versionCode 10/' android/app/build.gradle
+sed -i 's/versionName "[^"]*"/versionName "1.9"/' android/app/build.gradle
 # Novo icone (fundo removido) em todo o projeto: launcher + adaptive icon.
 cp -r native/launcher/mipmap-* android/app/src/main/res/
 sed -i 's/#FFFFFF/#000000/' android/app/src/main/res/values/ic_launcher_background.xml
