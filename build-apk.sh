@@ -30,11 +30,16 @@ npm install --no-audit --no-fund > /dev/null
 npx cap sync android > /dev/null
 # Mesmo applicationId e mesma chave debug => atualizar por cima preserva dados.
 # versionCode maior identifica a instalacao como atualizacao.
-sed -i 's/versionCode [0-9]*/versionCode 8/' android/app/build.gradle
-sed -i 's/versionName "[^"]*"/versionName "1.7"/' android/app/build.gradle
+sed -i 's/versionCode [0-9]*/versionCode 9/' android/app/build.gradle
+sed -i 's/versionName "[^"]*"/versionName "1.8"/' android/app/build.gradle
 # Novo icone (fundo removido) em todo o projeto: launcher + adaptive icon.
 cp -r native/launcher/mipmap-* android/app/src/main/res/
 sed -i 's/#FFFFFF/#000000/' android/app/src/main/res/values/ic_launcher_background.xml
+# Permissao e FileProvider para instalar o APK baixado da release do GitHub.
+grep -q 'REQUEST_INSTALL_PACKAGES' android/app/src/main/AndroidManifest.xml || \
+  sed -i 's#</manifest>#    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />\n</manifest>#' android/app/src/main/AndroidManifest.xml
+grep -q 'external-files-path' android/app/src/main/res/xml/file_paths.xml || \
+  sed -i 's#</paths>#    <external-files-path name="downloads" path="Download" />\n</paths>#' android/app/src/main/res/xml/file_paths.xml
 cp native/TokenBridgePlugin.java android/app/src/main/java/com/tokenscope/app/TokenBridgePlugin.java
 cat > android/app/src/main/java/com/tokenscope/app/MainActivity.java <<'EOF'
 package com.tokenscope.app;

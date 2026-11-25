@@ -1,10 +1,15 @@
 package com.tokenscope.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.core.content.FileProvider;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
@@ -15,6 +20,8 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -203,6 +210,52 @@ public class TokenBridgePlugin extends Plugin {
             w.setAttributes(lp);
         });
         call.resolve(new JSObject().put("value", value));
+    }
+
+    /** Baixa um APK de atualização e abre o instalador do Android. */
+    @PluginMethod
+    public void downloadAndInstall(PluginCall call) {
+        final String url = call.getString("url");
+        if (url == null) { call.reject("URL do APK não informada."); return; }
+        final String name = call.getString("fileName", "tokenscope-update.apk");
+        pool.execute(() -> {
+            HttpURLConnection conn = null;
+            try {
+                File dir = getContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                if (dir == null) dir = getContext().getFilesDir();
+                if (!dir.exists()) dir.mkdirs();
+                File apk = new File(dir, name);
+                conn = (HttpURLConnection) new URL(url).openConnection();
+                conn.setInstanceFollowRedirects(true);
+                conn.setConnectTimeout(20000);
+                conn.setReadTimeout(120000);
+                int status = conn.getResponseCode();
+                if (status >= 400) throw new IOException("HTTP " + status);
+                try (InputStream in = conn.getInputStream();
+                     FileOutputStream out = new FileOutputStream(apk)) {
+                    byte[] buf = new byte[16384];
+                    int r;
+                    while ((r = in.read(buf)) != -1) out.write(buf, 0, r);
+                }
+                if (!apk.exists() || apk.length() < 100000) throw new IOException("APK inválido ou muito pequeno.");
+                Uri uri = FileProvider.getUriForFile(getContext(),
+                        getContext().getPackageName() + ".fileprovider", apk);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(uri, "application/vnd.android.package-archive");
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                final Intent installIntent = intent;
+                getBridge().getActivity().runOnUiThread(() -> getContext().startActivity(installIntent));
+                JSObject ret = new JSObject();
+                ret.put("path", apk.getAbsolutePath());
+                ret.put("bytes", apk.length());
+                call.resolve(ret);
+            } catch (Exception e) {
+                call.reject("Falha ao baixar atualização: " + e.getMessage());
+            } finally {
+                if (conn != null) conn.disconnect();
+            }
+        });
     }
 
     private void stopRule(String id) {

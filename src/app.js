@@ -3,6 +3,9 @@ import { collectUsage, fmtK } from './usage.js';
 import { requestJSON, requestRaw, nativeCall, hasNativeBridge, isNative } from './net.js';
 import { load, save, uid, recordHistory } from './store.js';
 
+const APP_VERSION = '1.8';
+const UPDATE_REPO = 'mpjsilva/tokenscope';
+const RELEASE_URL = `https://github.com/${UPDATE_REPO}/releases/latest`;
 const state = load();
 let currentTab = 'dashboard';
 let refreshing = false;
@@ -103,6 +106,58 @@ function todayIO() {
     input: rows.reduce((a, h) => a + (h.input || 0), 0),
     output: rows.reduce((a, h) => a + (h.output || 0), 0)
   };
+}
+
+/* ---------------------------- atualizações -------------------------------- */
+function versionNewer(a, b) {
+  const pa = String(a || '').split('.').map(x => parseInt(x, 10) || 0);
+  const pb = String(b || '').split('.').map(x => parseInt(x, 10) || 0);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    if ((pa[i] || 0) > (pb[i] || 0)) return true;
+    if ((pa[i] || 0) < (pb[i] || 0)) return false;
+  }
+  return false;
+}
+
+async function checkUpdate(notify = false) {
+  try {
+    const j = await requestJSON({
+      url: `https://api.github.com/repos/${UPDATE_REPO}/releases/latest`,
+      timeout: 15000
+    });
+    const version = String(j.tag_name || '').replace(/^v/, '');
+    const asset = (Array.isArray(j.assets) ? j.assets : []).find(a => /\.apk$/i.test(a.name || ''));
+    if (versionNewer(version, APP_VERSION)) {
+      state.updateInfo = {
+        version,
+        notes: String(j.body || '').slice(0, 700),
+        url: asset?.browser_download_url || '',
+        page: j.html_url || RELEASE_URL,
+        at: new Date().toISOString()
+      };
+      if (notify) toast(`Atualização v${version} disponível!`, 'ok');
+    } else {
+      state.updateInfo = null;
+      if (notify) toast('Você já está na versão mais recente.', 'ok');
+    }
+    save(state); render();
+  } catch (e) {
+    if (notify) toast('Não foi possível verificar: ' + (e.message || e), 'err');
+  }
+}
+
+async function downloadUpdate() {
+  const u = state.updateInfo;
+  if (!u) return;
+  if (!u.url) { window.open(u.page, '_blank'); return; }
+  if (!hasNativeBridge()) { window.open(u.page, '_blank'); return; }
+  toast('Baixando atualização...');
+  try {
+    await nativeCall('downloadAndInstall', { url: u.url, fileName: `tokenscope-v${u.version}.apk` });
+    toast('Instalador aberto.', 'ok');
+  } catch (e) {
+    toast('Falha no download: ' + (e.message || e), 'err');
+  }
 }
 
 /* ------------------------------- modelos --------------------------------- */
@@ -450,6 +505,9 @@ function viewDashboard() {
         <div class="metric"><div class="k">Limites monitorados</div><div class="v">${withLimits}</div></div>
       </div>
     </section>
+    ${state.updateInfo ? `<button class="update-banner" data-act="update-info">
+      ${icon('download')}<span>Atualização v${esc(state.updateInfo.version)} disponível</span>${icon('chevron')}
+    </button>` : ''}
     <div class="section-title"><span>Meus provedores</span><button class="link" data-act="add-service">+ adicionar</button></div>
     ${cards || `<div class="card empty"><div class="empty-ico">${icon('layers')}</div><h3>Nenhum provedor conectado</h3><p>Adicione uma API key para acompanhar tokens, limites e custo em um só lugar.</p><button class="btn primary" data-act="add-service">${icon('plus')} Adicionar provedor</button></div>`}
   `;
@@ -578,6 +636,13 @@ function viewSettings() {
         </div>
       </div>
     </section>
+    <div class="section-title"><span>Atualização</span></div>
+    <section class="card">
+      <div class="switch-row"><div><div class="t">Versão instalada</div><div class="d">v${APP_VERSION} · releases do GitHub</div></div>
+        <button class="btn sm" data-act="check-update">${icon('refresh')} Verificar</button></div>
+      ${state.updateInfo ? `<div class="update-banner" style="margin-top:10px" data-act="update-info">
+        ${icon('download')}<span>Nova versão v${esc(state.updateInfo.version)}</span>${icon('chevron')}</div>` : ''}
+    </section>
     <div class="section-title"><span>Dados</span></div>
     <section class="card">
       <div class="btn-row"><button class="btn" data-act="export">${icon('download')} Exportar JSON</button><button class="btn" data-act="import">${icon('upload')} Importar</button></div>
@@ -586,7 +651,7 @@ function viewSettings() {
     <div class="section-title"><span>Sobre</span></div>
     <section class="card" style="text-align:center">
       <img src="src/icons/tokenscope-brand.png" alt="TokenScope" style="height:104px;max-width:100%;object-fit:contain;display:block;margin:0 auto 12px">
-      <div style="font-weight:750;text-align:left">TokenScope v1.7</div>
+      <div style="font-weight:750;text-align:left">TokenScope v${APP_VERSION}</div>
       <div style="font-size:12px;color:var(--muted);margin-top:5px;text-align:left">Monitora provedores de IA e seus gastos em limites e tokens: OpenCode, OpenRouter, OpenAI, Anthropic, Claude, Groq, Together, DeepSeek, Gemini e APIs OpenAI-compatible.</div>
       <div style="font-size:11px;color:var(--muted-2);margin-top:10px;text-align:left">Feito por mpjsliva usando Hy4 flash · Plataforma: ${esc(isNative() ? 'Android (Capacitor)' : 'Navegador')}</div>
     </section>`;
@@ -726,6 +791,18 @@ function renderSheet() {
     title.textContent = sheet.title || 'Confirmar';
     body.innerHTML = `<p style="font-size:13px;color:var(--muted);margin-bottom:18px">${esc(sheet.text || '')}</p>
       <div class="btn-row"><button class="btn primary" data-act="confirm-yes">Confirmar</button><button class="btn ghost" data-act="close-sheet">Cancelar</button></div>`;
+    return;
+  }
+  if (sheet.kind === 'update') {
+    const u = state.updateInfo;
+    title.textContent = 'Atualização v' + (u?.version || '');
+    body.innerHTML = `
+      <div class="note">Versão instalada: v${APP_VERSION} · Nova versão: v${esc(u?.version || '')}. Baixe direto pelo app no Android ou abra a página da release.</div>
+      ${u?.notes ? `<div class="note" style="margin-top:10px;white-space:pre-wrap">${esc(u.notes)}</div>` : ''}
+      <div class="btn-row" style="margin-top:16px">
+        <button class="btn primary" data-act="download-update">${icon('download')} Baixar e instalar</button>
+        <button class="btn ghost" data-act="open-release">${icon('external')} GitHub</button>
+      </div>`;
     return;
   }
   if (sheet.kind === 'modelInfo') {
@@ -1030,6 +1107,10 @@ document.addEventListener('click', async e => {
       break;
     }
     case 'fetch-rate': await fetchRate(true); break;
+    case 'check-update': await checkUpdate(true); break;
+    case 'update-info': if (state.updateInfo) openSheet('update'); break;
+    case 'download-update': await downloadUpdate(); break;
+    case 'open-release': window.open(state.updateInfo?.page || RELEASE_URL, '_blank'); break;
   }
 });
 
@@ -1057,6 +1138,7 @@ setupRefresh();
 // sempre recarrega do console para marcar os modelos Go como ativos.
 state.services.filter(s => s.providerId === 'opencode' && s.apiKey).forEach(s => fetchModels(s, false));
 if (state.settings.autoRate) fetchRate(false);
+checkUpdate(false);
 setInterval(tickAmoled, 2000);
 setInterval(shiftAmoled, 60000);
 document.addEventListener('visibilitychange', () => {

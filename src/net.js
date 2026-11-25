@@ -10,7 +10,7 @@ export function isNative() {
 
 const NATIVE_METHODS = [
   'request', 'startProxy', 'stopProxy', 'getStats', 'clearStats', 'getLocalIp',
-  'keepAwake', 'setBrightness'
+  'keepAwake', 'setBrightness', 'downloadAndInstall'
 ];
 
 export function bridge() {
